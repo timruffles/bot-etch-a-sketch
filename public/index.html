@@ -15,11 +15,14 @@
       <canvas command-canvas width=800 height=600 onpath=addCommand(command)></canvas>
     </div>
 
-    <ol ng-controller=commands class=queue>
-      <li ng-repeat="command in commands" ng-class="state">
-        <canvas minimap width=50 height=50 path="command.path"></canvas>
-      </li>
-    </ol>
+    <div class=queue>
+      <h3>Queue</h3>
+      <ol ng-controller=commands>
+        <li ng-repeat="command in commands" ng-class="state">
+          <canvas minimap width=50 height=50 path="command.path"></canvas>
+        </li>
+      </ol>
+    </div>
 
   </div>
 
