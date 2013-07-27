@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+  <title>Bot control</title>
+</head>
+<body ng-app="bot">
+
+  <div ng-controller=botControl>
+
+    <div command-canvas oncommand=addCommand(command)></div>
+
+    <ol ng-controller=commands>
+      <li ng-repeat="command in commands" ng-class="state">
+        <div minimap path="command.path"></div>
+      </li>
+    </ol>
+
+  </div>
+
+
+  <script src="angular.js"></script>
+  <script src="app.js"></script>
+</body>
