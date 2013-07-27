@@ -43,21 +43,23 @@ app.directive("commandCanvas",function() {
     }
     function fadeOut() {
       if(fading) return
-      fading = true
-      el.addClass("fade")
+      fading = true;
+      el.addClass("fade");
       setTimeout(function() {
         ctx.clearRect(0,0,width,height)
         el.removeClass("fade")
         fading = false
-      },500)
+      console.log("end")
+      },700);
     }
     function lineStart(evt) {
       if(fading) return;
+      ctx.clearRect(0,0,width,height)
+      ctx.beginPath()
       var box = el[0].getBoundingClientRect()
       width = box.width
       height = box.height
       command = []
-      ctx.beginPath()
       var normed = normaliseCoords(evt)
       ctx.moveTo(normed.x,normed.y)
       command.push(normed)
@@ -74,12 +76,11 @@ app.directive("commandCanvas",function() {
       if(fading) return
       ctx.stroke();
       commandFinished()
+      fadeOut();
       $(evt.target).unbind("mousemove",lineMove)
       command = []
     }
     function commandFinished() {
-      if(fading || command.length < 2) return
-      fadeOut();
       scope.command = coordsToRatios(command)
       scope.$eval( attrs.onpath )
       command = []
