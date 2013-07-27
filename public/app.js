@@ -25,6 +25,7 @@ app.directive("commandCanvas",function() {
     var width;
     var height;
     var fading = false;
+    var started = false;
 
     ctx = el[0].getContext("2d")
     el.bind("mousedown",lineStart)
@@ -54,6 +55,8 @@ app.directive("commandCanvas",function() {
     }
     function lineStart(evt) {
       if(fading) return;
+      started = true;
+      el.find(".draw-me").css("display","none");
       ctx.clearRect(0,0,width,height)
       ctx.beginPath()
       var box = el[0].getBoundingClientRect()
@@ -73,7 +76,8 @@ app.directive("commandCanvas",function() {
       ctx.stroke()
     }
     function lineEnd(evt) {
-      if(fading) return
+      if(fading || !started) return
+      started = false;
       ctx.stroke();
       commandFinished()
       fadeOut();
@@ -81,6 +85,7 @@ app.directive("commandCanvas",function() {
       command = []
     }
     function commandFinished() {
+      if(command.length < 2) return command = [];
       scope.command = coordsToRatios(command)
       scope.$eval( attrs.onpath )
       command = []

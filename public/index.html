@@ -64,12 +64,31 @@
     .command .remove:hover {
       background: hsla(0,100%,100%,0.4);
     }
+    .control {
+      position: relative;
+      width: 800px;
+      height: 600px;
+    }
     .control canvas {
       opacity: 1;
       -webkit-transition: all 0.5s;
+      position: absolute;
+      z-index: 2;
     }
     .control canvas.fade {
       opacity: 0;
+    }
+    .draw-me {
+      font-family: "Marker Felt", "Comic Sans", "Comic Sans MS", cursive;
+      font-size: 4em;
+      position: absolute;
+      top: 25%;
+      text-align: center;
+      width: 10em;
+    }
+    .queue .empty {
+      text-align: center;
+      line-height: 53px;
     }
   </style>
 </head>
@@ -79,15 +98,17 @@
 
     <div class=control>
       <canvas command-canvas width=800 height=600 clear-color="#222" onpath=addCommand(command)></canvas>
+      <div class="draw-me" ng-hide="commands.length > 0">Draw a path for the bot to drive</div>
     </div>
 
     <div class=queue>
-      <h3>Queue</h3>
+      <h3>Command queue</h3>
       <ol ng-controller=commands class=commands>
         <li ng-repeat="command in commands" ng-class="state" class=command>
           <canvas minimap width=50 height=50 path="command.path"></canvas>
           <a class="remove" ng-click=removeCommand(command)>Remove</a>
         </li>
+        <li class=empty ng-hide="commands.length > 0">No commands yet</li>
       </ol>
     </div>
 
