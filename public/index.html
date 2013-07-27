@@ -5,21 +5,88 @@
     .control, .queue {
       float: left
     }
+    .control canvas {
+      cursor: default;
+    }
+    body {
+      background: #222;
+      margin: 0;
+      font-family: "Helvetica Neue", sans-serif;
+      color: #fff;
+    }
+    html, .wrap, body {
+      overflow: auto;
+      min-height: 100%;
+    }
+    body, h1,h2,h3,h4,h5,h6,h7 {
+      font-weight: 100;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    .commands {
+      width: 20em;
+    }
+    .commands .command {
+      background: #16a085;
+      list-style-type: none;
+    }
+    .commands .command:nth-child(2n) {
+      background: #1abc9c;
+    }
+    .queue h3 {
+      background: #2980b9;
+      height: 2em;
+      line-height: 2em;
+      margin: 0;
+      text-align: center;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      font-size: 1.5em
+    }
+    .queue {
+      background: hsla(0,100%,100%,0.2);
+      height: 40em;
+      overflow: hidden;
+      overflow-y: scroll;
+    }
+    .commands, .commands .command {
+      padding: 0;
+      margin: 0;
+    }
+    .command .remove {
+      float: right;
+      line-height: 53px;
+      padding: 0 10px;
+      background: hsla(0,100%,100%,0.2);
+      cursor: pointer;
+    }
+    .command .remove:hover {
+      background: hsla(0,100%,100%,0.4);
+    }
+    .control canvas {
+      opacity: 1;
+      -webkit-transition: all 0.5s;
+    }
+    .control canvas.fade {
+      opacity: 0;
+    }
   </style>
 </head>
 <body ng-app="bot">
 
-  <div ng-controller=botControl>
+  <div ng-controller=botControl class=wrap>
 
     <div class=control>
-      <canvas command-canvas width=800 height=600 onpath=addCommand(command)></canvas>
+      <canvas command-canvas width=800 height=600 clear-color="#222" onpath=addCommand(command)></canvas>
     </div>
 
     <div class=queue>
       <h3>Queue</h3>
-      <ol ng-controller=commands>
-        <li ng-repeat="command in commands" ng-class="state">
+      <ol ng-controller=commands class=commands>
+        <li ng-repeat="command in commands" ng-class="state" class=command>
           <canvas minimap width=50 height=50 path="command.path"></canvas>
+          <a class="remove" ng-click=removeCommand(command)>Remove</a>
         </li>
       </ol>
     </div>
