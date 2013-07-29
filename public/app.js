@@ -137,6 +137,8 @@ app.directive("botCanvas",function() {
 
     var bot = scope.$eval(attrs.bot)
     var model = new BotModel(bot,n.x,n.y)
+    bot.x = n.x;
+    bot.y = n.y
 
     var lastTime = Date.now()
     var tickMilli = 200;
@@ -149,8 +151,12 @@ app.directive("botCanvas",function() {
     },true)
 
     function normalise(points) {
+      var start = points[0];
       return points.map(function(p) {
-        return {x:p.x * box.width, y: p.y*box.height}
+        return {
+          x: (p.x - start.x) * box.width,
+          y: (p.y - start.y) * box.height
+        }
       })
     }
 

@@ -1,15 +1,19 @@
 var Events = Backbone.Events;
 
+var SECONDS = 1000;
+
 function Bot(x,y) {
   this.angle = 0
   this.x = x
   this.y = y
 }
+Number.prototype.human = function() { return this.toPrecision(2) }
 var CIRCLE = 2 * Math.PI
 Bot.prototype = {
   secondsToTurnACircle: 3,
   secondsPerPoint: 0.1,
   driveThroughPoints: function(points,cb) {
+    console.log("driving through",points.length,"points")
     var todo = points;
     var runPoint = function() {
       var p = todo.shift()
@@ -26,12 +30,13 @@ Bot.prototype = {
     var rY = y - this.y
     var angle = Math.atan2(rX,rY)
     var diff = angle - this.angle
-    console.log("rotating to",diff)
+    console.log("rotating through",diff.human())
     var sqr = function(x) { return x*x }
-    var distance = Math.sqrt(sqr(Math.abs(rX - this.rX)) + sqr(Math.abs(rY - this.rY)))
+    var distance = Math.sqrt(sqr(x) + sqr(y))
+    console.log("to go",distance)
     this.turn(diff,function() {
       this.angle = angle;
-      console.log("new bearing",diff)
+      console.log("new bearing",diff.human())
       this.drive(distance,function() {
         console.log("new position",x,y)
         this.x = x
@@ -47,7 +52,7 @@ Bot.prototype = {
     setTimeout(function() {
       this.stop()
       cb()
-    }.bind(this),circles * this.secondsToTurnACircle)
+    }.bind(this),circles * this.secondsToTurnACircle * SECONDS)
   },
   stop: function() {
     this.leftMotor("stop")
@@ -72,7 +77,7 @@ Bot.prototype = {
     this.trigger("right",direction)
   },
   drive: function(distance,cb) {
-    var duration = distance / this.secondsPerPoint
+    var duration = distance / this.secondsPerPoint * SECONDS
     this.forward();
     setTimeout(function() {
       this.stop()
