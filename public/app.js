@@ -31,7 +31,7 @@ app.directive("commandCanvas",function() {
     var fading = false;
     var started = false;
 
-    ctx = el[0].getContext("2d")
+    var ctx = el[0].getContext("2d")
     el.bind("mousedown",lineStart)
     el.bind("mouseup",lineEnd)
     el.bind("mouseout",lineEnd)
